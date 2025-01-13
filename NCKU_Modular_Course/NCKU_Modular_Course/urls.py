@@ -16,11 +16,14 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from sum import views
+from day1 import views as day1_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("sum/", views.sum),
     path("ajax_sum/", views.ajax_sum),
+    path("day1/", include("day1.urls")),
+    path("day1/", day1_views.day1_view, name="day1"),
 ]

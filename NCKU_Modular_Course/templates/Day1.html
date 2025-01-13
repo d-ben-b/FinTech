@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stock Analysis</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="{% static 'css/day1.css' %}" />
+  </head>
+  <body>
+    <h1>Stock Analysis</h1>
+
+    <!-- 使用者輸入表單 -->
+    <form id="stock-form" method="GET" action="{% url 'analyze' %}">
+      <label for="stock">Stock Symbol:</label>
+      <input
+        type="text"
+        id="stock"
+        name="symbol"
+        placeholder="e.g., AAPL, TSLA"
+        required />
+
+      <label for="start_date">Start Date:</label>
+      <input type="date" id="start_date" name="start" required />
+
+      <label for="end_date">End Date:</label>
+      <input type="date" id="end_date" name="end" required />
+
+      <button type="submit">Analyze</button>
+    </form>
+
+    <!-- 分析結果 -->
+    <div id="analysis-section" style="margin-top: 20px">
+      {% if error %}
+      <p>{{ error }}</p>
+      {% else %}
+      <h2>Stock: {{ stock_symbol }}</h2>
+      <p>From {{ start_date }} to {{ end_date }}</p>
+
+      <!-- 蠟燭圖容器 -->
+      <div id="candle-chart" style="height: 600px; margin: 50px 0"></div>
+
+      <!-- 成交量圖容器 -->
+      <div id="volume-chart" style="height: 300px; margin: 50px 0"></div>
+      {% endif %}
+    </div>
+    <table id="volume-table" class="display">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>High Volume</th>
+          <th>Five Day MA</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const volumeData = {{ volume_data|safe|lower }};
+        const ohlc = {{ stock_data|safe }};
+        const tableData = {{ table_data|safe }};
+
+        if (!volumeData || volumeData.length === 0) {
+          console.error("Volume data not available.");
+          return;
+        }
+
+        if (!ohlc || ohlc.length === 0) {
+          console.error("OHLC data not available.");
+          return;
+        }
+
+        const volume = [];
+        const avgVolume = [];
+        volumeData.forEach((point) => {
+          const date = new Date(point.date).getTime();
+          volume.push({
+            x: date,
+            y: point.volume,
+            color: point.is_spike ? "red" : "blue", // 爆量紅色，其他藍色
+          });
+          if (point.avg_volume) {
+            avgVolume.push([date, point.avg_volume]);
+          }
+        });
+
+        // 初始化成交量圖
+        Highcharts.chart("volume-chart", {
+          chart: { type: "column" },
+          title: { text: "Volume Data with Spikes" },
+          xAxis: { type: "datetime" },
+          yAxis: { title: { text: "Volume" } },
+          series: [
+            {
+              name: "Volume",
+              data: volume,
+              tooltip: { valueDecimals: 0 },
+            },
+            {
+              name: "5-Day Average Volume",
+              type: "line", // 使用折線圖表示均線
+              data: avgVolume,
+              tooltip: { valueDecimals: 0 },
+              color: "orange", // 五日均線顯示為橘色
+            },
+          ],
+        });
+
+        // 格式化 OHLC 數據
+        const formattedOhlc = ohlc.map((point) => [
+          new Date(point[0]).getTime(), // 日期轉換為時間戳
+          point[1], // Open
+          point[2], // High
+          point[3], // Low
+          point[4], // Close
+        ]);
+
+        // 初始化蠟燭圖
+        Highcharts.stockChart("candle-chart", {
+          rangeSelector: {
+            selected: 1, // 預設選擇範圍
+          },
+          title: {
+            text: "Stock Price and OHLC Data",
+          },
+          xAxis: { type: "datetime" },
+          series: [
+            {
+              type: "candlestick",
+              name: "Stock Price",
+              data: formattedOhlc, // 蠟燭圖數據
+              tooltip: {
+                valueDecimals: 2, // 顯示小數點位數
+              },
+            },
+          ],
+        });
+        $("#volume-table").DataTable({
+          data: tableData,
+          columns: [
+            { data: "date", title: "Date" },
+            { data: "high_volume", title: "High Volume" },
+            { data: "five_day_ma", title: "Five Day MA" },
+          ],
+          order: [[0, "asc"]],
+          pageLength: 10, // 每頁顯示 10 筆
+        });
+      });
+    </script>
+  </body>
+</html>
