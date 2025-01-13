@@ -91,3 +91,75 @@ def day1_view(request):
             "dates": [],
         },
     )
+
+
+def analyze_from_vue(request):
+    symbol = request.GET.get("symbol")
+    start = request.GET.get("start")
+    end = request.GET.get("end")
+
+    # Validate input
+    if not symbol or not start or not end:
+        return JsonResponse({"error": "Invalid input parameters."}, status=400)
+
+    # Fetch stock data
+    try:
+        df = yf.download(symbol, start=start, end=end)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+    if df.empty or "Volume" not in df.columns:
+        return JsonResponse(
+            {"error": "No data available for the selected date range."}, status=400
+        )
+
+    # Simplify MultiIndex column names
+    df.columns = df.columns.get_level_values(0)
+
+    # Fill NaN values in Volume
+    df["Volume"] = df["Volume"].fillna(0)
+
+    # Calculate 5-day moving average of Volume
+    df["5DayAvgVolume"] = talib.SMA(
+        df["Volume"].values.astype(np.float64), timeperiod=5
+    )
+    df.rename(columns={"5DayAvgVolume": "AvgVolume"}, inplace=True)
+    df["AvgVolume"].fillna(0, inplace=True)
+
+    # Identify volume spikes
+    df["is_spike"] = df["Volume"] > df["AvgVolume"]
+
+    # Prepare data for the front-end
+    candlestick_data = [
+        [row.Index.strftime("%Y-%m-%d"), row.Open, row.High, row.Low, row.Close]
+        for row in df.itertuples()
+    ]
+    volume_data = [
+        {
+            "date": row.Index.strftime("%Y-%m-%d"),
+            "volume": row.Volume,
+            "avg_volume": row.AvgVolume,
+            "is_spike": row.is_spike,
+        }
+        for row in df.itertuples()
+    ]
+    table_data = [
+        {
+            "date": row.Index.strftime("%Y-%m-%d"),
+            "high_volume": row.Volume,
+            "five_day_ma": row.AvgVolume,
+        }
+        for row in df.itertuples()
+        if row.is_spike  # Only include rows with volume spikes
+    ]
+
+    # Build response
+    response = {
+        "stock_symbol": symbol,
+        "start_date": start,
+        "end_date": end,
+        "stock_data": candlestick_data,
+        "volume_data": volume_data,
+        "table_data": table_data,
+    }
+    return JsonResponse(response, safe=False)

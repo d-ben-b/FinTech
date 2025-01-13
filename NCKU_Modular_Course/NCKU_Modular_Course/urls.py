@@ -24,6 +24,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("sum/", views.sum),
     path("ajax_sum/", views.ajax_sum),
-    path("day1/", include("day1.urls")),
-    path("day1/", day1_views.day1_view, name="day1"),
+    # path("day1/", include("day1.urls")),
+    # path("day1/", day1_views.day1_view, name="day1"),
+    path("day1/analyze/", day1_views.analyze_from_vue, name="analyze"),
 ]
