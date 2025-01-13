@@ -162,4 +162,5 @@ def analyze_from_vue(request):
         "volume_data": volume_data,
         "table_data": table_data,
     }
+    ic(response)
     return JsonResponse(response, safe=False)

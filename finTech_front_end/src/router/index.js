@@ -9,6 +9,26 @@ const router = createRouter({
       name: 'Day1',
       component: Day1,
     },
+    {
+      path: '/day2',
+      name: 'Day2',
+      component: Day1,
+    },
+    {
+      path: '/day3',
+      name: 'Day3',
+      component: Day1,
+    },
+    {
+      path: '/day4',
+      name: 'Day4',
+      component: Day1,
+    },
+    {
+      path: '/day5',
+      name: 'Day5',
+      component: Day1,
+    },
   ],
 })
 

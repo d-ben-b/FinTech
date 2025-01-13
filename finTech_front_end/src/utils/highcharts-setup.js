@@ -11,4 +11,11 @@ if (typeof Accessibility === 'function') {
   Accessibility(Highcharts) // Initialize Accessibility if available
 }
 
+const locale = navigator.language || 'en-US'
+Highcharts.setOptions({
+  lang: {
+    locale: locale,
+  },
+})
+
 export default Highcharts

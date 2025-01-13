@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Stock Analysis</h1>
-
     <!-- User Input Form -->
     <form @submit.prevent="analyzeStock">
       <label for="stock">Stock Symbol:</label>
@@ -20,7 +19,10 @@
     <div v-if="error" style="margin-top: 20px">
       <p>{{ error }}</p>
     </div>
-    <div v-else style="margin-top: 20px">
+    <div
+      style="margin-top: 20px; display: flex; flex-direction: column; align-items: center"
+      v-show="stockSymbol"
+    >
       <h2>Stock: {{ stockSymbol }}</h2>
       <p>From {{ startDate }} to {{ endDate }}</p>
 
@@ -31,7 +33,16 @@
       <div id="volume-chart" style="height: 300px; margin: 50px 0"></div>
 
       <!-- Volume Table -->
-      <table id="volume-table" class="display"></table>
+      <table id="volume-table" class="display">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>High Volume</th>
+            <th>Five Day MA</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -121,15 +132,15 @@ export default {
     },
     renderTable() {
       $('#volume-table').DataTable({
-        data: this.tableData,
+        data: this.tableData, // 測試數據
         columns: [
           { data: 'date', title: 'Date' },
           { data: 'high_volume', title: 'High Volume' },
           { data: 'five_day_ma', title: 'Five Day MA' },
         ],
-        destroy: true,
-        order: [[0, 'asc']],
+        destroy: true, // 確保重新初始化
         pageLength: 10,
+        order: [[0, 'asc']],
       })
     },
   },
@@ -137,5 +148,87 @@ export default {
 </script>
 
 <style>
-/* Include your CSS here or link it externally */
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4fbf4; /* 淺綠背景 */
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  text-align: center;
+  color: #2e8b57; /* 深綠色標題 */
+  margin-top: 20px;
+  font-size: 2em;
+}
+
+/* Form Styles */
+form {
+  background-color: #e8f5e8; /* 淺綠色表單背景 */
+  border: 1px solid #d4ebd4;
+  border-radius: 10px;
+  padding: 20px;
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #2e8b57;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #d4ebd4;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+form button {
+  background-color: #2e8b57;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #267947; /* 更深的綠色 */
+}
+
+/* Chart Containers */
+#candle-chart,
+#volume-chart {
+  display: flex; /* 使用Flexbox確保內容居中 */
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: 1px solid #d4ebd4;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+  height: 400px; /* 固定高度，避免圖表過小或過大 */
+}
+
+/* Error Message */
+p {
+  text-align: center;
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
 </style>
