@@ -17,7 +17,7 @@
 
     <!-- Analysis Section -->
     <div v-if="error" style="margin-top: 20px">
-      <p>{{ error }}</p>
+      <p class="error">{{ error }}</p>
     </div>
     <div
       style="margin-top: 20px; display: flex; flex-direction: column; align-items: center"
@@ -225,9 +225,15 @@ form button:hover {
 }
 
 /* Error Message */
-p {
+.error p {
   text-align: center;
   color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+p {
+  text-align: center;
+  color: #0b5b2e;
   font-weight: bold;
   margin-top: 10px;
 }
