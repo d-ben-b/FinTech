@@ -31,13 +31,29 @@ form label {
   color: #2e8b57;
 }
 
-form input {
+form input,
+form select {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #d4ebd4;
   border-radius: 5px;
   box-sizing: border-box;
+}
+form select {
+  cursor: pointer; /* 鼠標為手形 */
+  appearance: none; /* 移除預設箭頭 */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%232e8b57' d='M2 0L0 2h4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 12px;
+}
+
+form option {
+  padding: 10px;
+  font-size: 1em;
+  background-color: #ffffff; /* 白色背景 */
+  color: #2e8b57; /* 綠色文字 */
 }
 
 form button {

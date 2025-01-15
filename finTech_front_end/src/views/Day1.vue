@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h1>股票分析</h1>
     <!-- User Input Form -->
     <form @submit.prevent="analyzeStock">
@@ -127,7 +127,17 @@ export default {
       Highcharts.stockChart('candle-chart', {
         rangeSelector: { selected: 1 },
         title: { text: 'Stock Price and OHLC Data' },
-        series: [{ type: 'candlestick', name: 'Stock Price', data: ohlc }],
+        series: [
+          {
+            type: 'candlestick',
+            name: 'Stock Price',
+            data: ohlc,
+            upColor: 'green',
+            color: 'red',
+            upLineColor: 'green',
+            lineColor: 'red',
+          },
+        ],
       })
     },
     renderTable() {

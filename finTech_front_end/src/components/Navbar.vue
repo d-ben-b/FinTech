@@ -3,7 +3,8 @@
     <ul>
       <li><router-link to="/day1">Day1</router-link></li>
       <li><router-link to="/day2">Day2</router-link></li>
-      <li><router-link to="/day3">Day3</router-link></li>
+      <li><router-link to="/day3-1">Day3-1</router-link></li>
+      <li><router-link to="/day3-2">Day3-2</router-link></li>
       <li><router-link to="/day4">Day4</router-link></li>
       <li><router-link to="/day5">Day5</router-link></li>
     </ul>
@@ -15,6 +16,7 @@
 <style>
 /* Navbar Styles */
 .navbar {
+  position: fixed;
   background-color: #2e8b57; /* 深綠色背景 */
   padding: 10px 20px;
   display: flex;
@@ -22,6 +24,9 @@
   align-items: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   height: 50px;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
 }
 
 .navbar ul {

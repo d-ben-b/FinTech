@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Day1 from '@/views/Day1.vue'
 import Day2 from '@/views/Day2.vue'
-import Day3 from '@/views/Day3.vue'
+import Day3_1 from '@/views/Day3_1.vue'
 import test from '@/views/test.vue'
 
 const router = createRouter({
@@ -23,9 +23,14 @@ const router = createRouter({
       component: Day2,
     },
     {
-      path: '/day3',
-      name: 'Day3',
-      component: Day3,
+      path: '/day3-1',
+      name: 'Day3-1',
+      component: Day3_1,
+    },
+    {
+      path: '/day3-2',
+      name: 'Day3-2',
+      component: Day3_1,
     },
     {
       path: '/day4',

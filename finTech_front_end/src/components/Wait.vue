@@ -1,7 +1,7 @@
 <template>
   <div class="wait-container">
     <h2>查詢中，請稍候...</h2>
-    <p>試著點擊動物來消磨時間！</p>
+    <p>點擊動物來消磨時間！</p>
 
     <div class="game-area">
       <img
@@ -79,5 +79,9 @@ h2 {
 .score {
   font-size: 1.2em;
   color: #28a745;
+}
+
+.wait-container p {
+  color: #1283e6;
 }
 </style>
