@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Day1 from '@/views/Day1.vue'
 import Day2 from '@/views/Day2.vue'
+import Day3 from '@/views/Day3.vue'
+import test from '@/views/test.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,7 +25,7 @@ const router = createRouter({
     {
       path: '/day3',
       name: 'Day3',
-      component: Day1,
+      component: Day3,
     },
     {
       path: '/day4',
@@ -34,6 +36,11 @@ const router = createRouter({
       path: '/day5',
       name: 'Day5',
       component: Day1,
+    },
+    {
+      path: '/test',
+      name: 'Test',
+      component: test,
     },
   ],
 })
