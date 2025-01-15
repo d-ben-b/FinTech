@@ -28,4 +28,5 @@ urlpatterns = [
     # path("day1/", day1_views.day1_view, name="day1"),
     path("day1/analyze/", day1_views.analyze_from_vue, name="analyze"),
     path("day2/", include("day2.urls")),
+    path("day3/", include("day3.urls")),
 ]

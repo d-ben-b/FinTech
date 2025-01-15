@@ -3,15 +3,15 @@
     <h1>股票定價結果</h1>
 
     <!-- 搜索條件 -->
-    <div class="form">
+    <form class="form">
       <label>股票代號:</label>
       <input v-model="stockSymbol" placeholder="例: 2330" />
 
       <label>歷史幾年資料:</label>
       <input v-model="n_months" type="number" placeholder="例: 10" />
 
-      <button @click="fetchStockData">搜尋</button>
-    </div>
+      <button @click.prevent="fetchStockData">搜尋</button>
+    </form>
 
     <!-- 加載中 -->
     <Wait v-if="isLoading" />
@@ -56,9 +56,7 @@ export default {
         const response = await axios.get(
           `/day2/api/stock-performance/${stockSymbol.value}/${n_months.value}`,
         )
-        console.log('Stock performance:', response.data)
         data = response.data
-        console.log('data:', data)
       } catch (error) {
         console.error('Failed to fetch stock performance:', error)
         error.value = 'Failed to fetch stock performance'
@@ -170,42 +168,6 @@ export default {
 .container {
   width: 80%;
   margin: 0 auto;
-  text-align: center;
-}
-
-h1 {
-  font-size: 2.5em;
-  color: #2c3e50;
-  margin-bottom: 20px;
-}
-
-.form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.form input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 150px;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-}
-
-button:hover {
-  background-color: #0056b3;
 }
 
 .loading p {

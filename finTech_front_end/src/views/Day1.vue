@@ -1,15 +1,15 @@
 <template>
   <div>
-    <h1>Stock Analysis</h1>
+    <h1>股票分析</h1>
     <!-- User Input Form -->
     <form @submit.prevent="analyzeStock">
-      <label for="stock">Stock Symbol:</label>
+      <label for="stock">股票代號：</label>
       <input v-model="symbol" type="text" id="stock" placeholder="e.g., AAPL, TSLA" required />
 
-      <label for="start_date">Start Date:</label>
+      <label for="start_date">起始日期：</label>
       <input v-model="startDate" type="date" id="start_date" required />
 
-      <label for="end_date">End Date:</label>
+      <label for="end_date">終止日期：</label>
       <input v-model="endDate" type="date" id="end_date" required />
 
       <button type="submit">Analyze</button>
@@ -56,9 +56,9 @@ import 'datatables.net-dt'
 export default {
   data() {
     return {
-      symbol: '',
-      startDate: '',
-      endDate: '',
+      symbol: 'TSLA',
+      startDate: '2024-01-01',
+      endDate: '2024-03-01',
       stockSymbol: '',
       error: '',
       volumeData: [],
@@ -147,66 +147,7 @@ export default {
 }
 </script>
 
-<style>
-/* Global Styles */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4fbf4; /* 淺綠背景 */
-  color: #333;
-  margin: 0;
-  padding: 0;
-}
-
-h1 {
-  text-align: center;
-  color: #2e8b57; /* 深綠色標題 */
-  margin-top: 20px;
-  font-size: 2em;
-}
-
-/* Form Styles */
-form {
-  background-color: #e8f5e8; /* 淺綠色表單背景 */
-  border: 1px solid #d4ebd4;
-  border-radius: 10px;
-  padding: 20px;
-  width: 90%;
-  max-width: 600px;
-  margin: 20px auto;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-form label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #2e8b57;
-}
-
-form input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #d4ebd4;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-form button {
-  background-color: #2e8b57;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-form button:hover {
-  background-color: #267947; /* 更深的綠色 */
-}
-
+<style scoped>
 /* Chart Containers */
 #candle-chart,
 #volume-chart {

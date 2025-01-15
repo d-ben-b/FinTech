@@ -1,10 +1,8 @@
 <script setup></script>
 
 <template>
-  <div id="app">
-    <Navbar />
-    <router-view></router-view>
-  </div>
+  <Navbar />
+  <router-view></router-view>
 </template>
 
 <style scoped></style>
