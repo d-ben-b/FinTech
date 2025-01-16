@@ -1,11 +1,10 @@
 # Ignore node_modules directory
-node_modules/
+
 
 # Ignore log files
 *.log
 
 # Ignore environment variable files
-.venv
 
 # Ignore build directories
 dist/
