@@ -2,22 +2,20 @@
   <div>
     <h1>本益比河流圖</h1>
     <form>
-      <label for="stockSymbol">
-        股票代號：
-        <input id="stockSymbol" v-model="stockSymbol" placeholder="例: 2330" />
-      </label>
-      <label>
-        歷史幾年資料:
-        <select id="option" v-model="option">
-          <option value="MONTH">月</option>
-          <option value="QUAR">季</option>
-          <option value="YEAR">年</option>
-        </select>
-      </label>
-      <label for="time">
-        時間區段:
-        <input type="number" id="time" v-model="time" placeholder="輸入時間區段" />
-      </label>
+      <label for="stockSymbol">股票代號：</label>
+
+      <input id="stockSymbol" v-model="stockSymbol" placeholder="例: 2330" />
+
+      <label> 歷史幾年資料:</label>
+      <select id="option" v-model="option">
+        <option value="MONTH">月</option>
+        <option value="QUAR">季</option>
+        <option value="YEAR">年</option>
+      </select>
+
+      <label for="time"> 時間區段:</label>
+      <input type="number" id="time" v-model="time" placeholder="輸入時間區段" />
+
       <button @click.prevent="renderCharts">搜尋</button>
     </form>
 
