@@ -1,0 +1,125 @@
+body{
+  text-align: center;
+}
+
+
+/*for slider*/
+/* .slider {
+  position: relative;
+  width: 10vw;
+  height: 3rem;
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+} */
+/* .slider-output {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  box-sizing: border-box;
+  transform: translateX(-50%);
+}
+.slider-input {
+  -webkit-appearance: none;
+  background-color: transparent;
+  position: absolute;
+  width: 105%;
+  margin-left: -2.5%;
+  height: 2rem;
+  outline: none;
+}
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 2rem;
+  height: 8rem;
+}
+.slider-thumb {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 1rem;
+  position: absolute;
+  top: -0.75rem;
+  background-color: #a4a7a8;
+  font-size: 100%;
+  line-height: 2rem;
+  text-align: center;
+}
+.slider-thumb {
+  left: 50%;
+  margin-left: -1rem;
+}
+.slider-track {
+  height: 0.5rem;
+  background-color: rgb(7, 7, 7);
+  border-radius: 0.25rem;
+}
+.slider-level {
+  height: 0.5rem;
+  background-color: #a4a7a8;
+  width: 50%;
+  border-radius: 1rem; 
+}*/
+.flex-container {
+  width: 1645px;
+  height: 1000px;
+  display: flex;
+  background-color: rgb(5, 5, 5);
+}
+
+.flex-container > div {
+  background-color: #f1f1f1;
+  margin: 5px;
+  padding: 20px;
+  font-size: 30px;
+}
+/* #flex-container2 {
+  width: 700x;
+  height: 500px;
+  display: flex;
+  background-color: rgb(54, 53, 53);
+}
+
+#flex-container2 > div {
+  background-color: #f1f1f1;
+  margin: 5px;
+  padding: 20px;
+  font-size: 30px;
+} */
+/* #table{width:1645px}
+#title{width: 1645px} */
+
+
+.bold {
+  font-weight: bolder;
+  font-size: 1.3em
+}
+.italic {
+  font-style: italic;
+  font-size: 1.3em
+}
+.report_element .dataTables_wrapper {
+  position: relative;
+  clear: both;
+  zoom: 1;
+  overflow-x: auto;
+  }
+/* .report_element table{
+width: 1800px;
+} */
+.font_blue {
+  color:rgb(55, 87, 194)
+}
+/* .slider_btn{
+  display: inline-block
+} */
+.btn-primary {
+  color: #fff;
+  background-color: gray;
+  border-color: gray;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active:hover{
+  color: #fff;
+  background-color: gray;
+  border-color: gray;
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %} 
+{% block content %}
+{% load static %}
+<head>
+    <title>HomePage</title>
+    <!--css-->
+    <link rel="stylesheet" href="{% static 'css/stock.css' %}">
+    <!--ajax js-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script type="text/javascript" src="{% static 'js/stock.js' %}"></script> -->
+    <!--Jquerry UI-->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <!--datatable-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.css"/>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/datatables.min.js"></script>
+    <!--BootStrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <p></p>
+    {% include 'includes/alerts.html' %}
+</body>
+
+{% endblock %}
