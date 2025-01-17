@@ -7,6 +7,7 @@
       <li><router-link to="/day3-2">Day3-2</router-link></li>
       <li><router-link to="/day4">Day4</router-link></li>
       <li><router-link to="/day5">Day5</router-link></li>
+      <li><router-link to="/logout">Logout</router-link></li>
     </ul>
   </nav>
 </template>

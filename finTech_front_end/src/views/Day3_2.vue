@@ -108,9 +108,9 @@ const renderCharts = async () => {
       .map((flag, index) => {
         if (flag === 1) {
           return {
-            x: index,
+            x: dates[index],
             title: label,
-            text: `Date: ${dates[index]}`,
+            text: label,
           }
         }
         return null
@@ -142,6 +142,16 @@ const renderCharts = async () => {
       name: 'MA',
       data: combineDateValue(dates, data.MA),
       type: 'line',
+    },
+    {
+      name: 'flag',
+      data: generateFlagData(data.flag_up, dates, 'Ceiling Breakout'),
+      type: 'flags',
+    },
+    {
+      name: 'flag',
+      data: generateFlagData(data.flag_down, dates, 'Floor Breakout'),
+      type: 'flags',
     },
   ]
 
