@@ -1,11 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 import yfinance as yf
-import pandas as pd
-import numpy as np
-import talib
-from icecream import ic
-import json
 
 
 def analyze(request):
@@ -27,20 +22,16 @@ def analyze(request):
     df["Volume"] = df["Volume"].fillna(0)
 
     # 計算 5 日均量
-    df["5DayAvgVolume"] = talib.SMA(
-        df["Volume"].values.astype(np.float64), timeperiod=5
-    )
+    df["5DayAvgVolume"] = df["Volume"].rolling(window=5).mean()
     df.rename(columns={"5DayAvgVolume": "AvgVolume"}, inplace=True)
     df["AvgVolume"].fillna(0, inplace=True)
 
     df["is_spike"] = df["Volume"] > df["AvgVolume"]
 
-    for row in df.itertuples():
-        ic(row)
-
     # 準備數據給前端
     candlestick_data = [
-        [row.Index.strftime("%Y-%m-%d"), row.Open, row.High, row.Low, row.Close]
+        [row.Index.strftime("%Y-%m-%d"), row.Open,
+         row.High, row.Low, row.Close]
         for row in df.itertuples()
     ]
     volume_data = [
@@ -73,7 +64,6 @@ def analyze(request):
         "table_data": table_data,
         "dates": dates,
     }
-    ic(response)
 
     return render(request, "day1.html", response)
 
@@ -120,9 +110,7 @@ def analyze_from_vue(request):
     df["Volume"] = df["Volume"].fillna(0)
 
     # Calculate 5-day moving average of Volume
-    df["5DayAvgVolume"] = talib.SMA(
-        df["Volume"].values.astype(np.float64), timeperiod=5
-    )
+    df["5DayAvgVolume"] = df["Volume"].rolling(window=5).mean()
     df.rename(columns={"5DayAvgVolume": "AvgVolume"}, inplace=True)
     df["AvgVolume"].fillna(0, inplace=True)
 
@@ -131,7 +119,8 @@ def analyze_from_vue(request):
 
     # Prepare data for the front-end
     candlestick_data = [
-        [row.Index.strftime("%Y-%m-%d"), row.Open, row.High, row.Low, row.Close]
+        [row.Index.strftime("%Y-%m-%d"), row.Open,
+         row.High, row.Low, row.Close]
         for row in df.itertuples()
     ]
     volume_data = [
@@ -162,5 +151,4 @@ def analyze_from_vue(request):
         "volume_data": volume_data,
         "table_data": table_data,
     }
-    ic(response)
     return JsonResponse(response, safe=False)

@@ -1,0 +1,19 @@
+version: "3"
+services:
+  backend:
+    build:
+      context: ./NCKU_Modular_Course
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    container_name: django-backend
+    # environment: # etc. if needed
+
+  frontend:
+    build:
+      context: ./finTech_front_end
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    container_name: vue-frontend
+    # environment: # etc. if needed

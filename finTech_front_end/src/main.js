@@ -9,7 +9,7 @@ import Wait from './components/Wait.vue'
 const app = createApp(App)
 
 app.config.globalProperties.$axios = axios
-axios.defaults.baseURL = 'http://127.0.0.1:8000/'
+axios.defaults.baseURL = 'http://localhost:8081/'
 
 app.use(router)
 app.use(HighchartsVue)

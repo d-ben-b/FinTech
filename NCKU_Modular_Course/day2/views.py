@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-from icecream import ic
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
@@ -9,8 +8,6 @@ from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 import twstock
-
-ic.disable()
 
 
 def fetch_stock_performance(request, stock_id, n_months):
@@ -31,8 +28,11 @@ def fetch_stock_performance(request, stock_id, n_months):
     options.add_argument("--disable-gpu")
     options.add_argument("--no-sandbox")
 
+    # driver = webdriver.Chrome(
+    #     service=Service(ChromeDriverManager().install()), options=options
+    # )
     driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()), options=options
+        options=options
     )
     driver.get(url)
     wait = WebDriverWait(driver, 10)
@@ -52,13 +52,11 @@ def fetch_stock_performance(request, stock_id, n_months):
         # 抓取最低PBR
         for i in range(3, n_months + 4):  # 從第 3 行開始
             try:
-                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                    i}]/td[16]"
+                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[16]"
                 PER_element = driver.find_element(By.XPATH, path)
                 PER_text = PER_element.text.strip()  # 提取文字並去除空格
                 if PER_text and PER_text != "-":  # 檢查是否為空
                     ALL_PBR.append(float(PER_text))  # 轉換為浮點數並添加到列表
-                ic(ALL_PBR)
             except Exception as e:
                 print(f"Error on row {i}: {e}")  # 打印錯誤，便於排查
                 continue
@@ -73,8 +71,7 @@ def fetch_stock_performance(request, stock_id, n_months):
         # 抓取最平均PBR
         for i in range(3, n_months + 4):  # 從第 3 行開始
             try:
-                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                    i}]/td[17]"
+                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[17]"
                 PER_element = driver.find_element(By.XPATH, path)
                 PER_text = PER_element.text.strip()  # 提取文字並去除空格
                 if PER_text and PER_text != "-":  # 檢查是否為空
@@ -93,8 +90,7 @@ def fetch_stock_performance(request, stock_id, n_months):
         # 抓取最high PBR
         for i in range(3, n_months + 4):  # 從第 3 行開始
             try:
-                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                    i}]/td[15]"
+                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[15]"
                 PER_element = driver.find_element(By.XPATH, path)
                 PER_text = PER_element.text.strip()  # 提取文字並去除空格
                 if PER_text and PER_text != "-":  # 檢查是否為空
@@ -120,15 +116,12 @@ def fetch_stock_performance(request, stock_id, n_months):
         avg_price = PBR_avg["average PBR"] * float(BPS)
         high_price = PBR_avg["high PBR"] * float(BPS)
 
-        ic(PBR_avg["low PBR"], PBR_avg["average PBR"], PBR_avg["high PBR"])
-
         # 本益比法
         # ------------------------------本益比法-----------------------------
         # 抓取最低PER
         for i in range(3, n_months + 4):  # 從第 3 行開始
             try:
-                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                    i}]/td[12]"
+                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[12]"
                 PER_element = driver.find_element(By.XPATH, path)
                 PER_text = PER_element.text.strip()  # 提取文字並去除空格
                 if PER_text and PER_text != "-":  # 檢查是否為空
@@ -147,8 +140,7 @@ def fetch_stock_performance(request, stock_id, n_months):
         # 抓取最平均PBR
         for i in range(3, n_months + 4):  # 從第 3 行開始
             try:
-                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                    i}]/td[13]"
+                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[13]"
                 PER_element = driver.find_element(By.XPATH, path)
                 PER_text = PER_element.text.strip()  # 提取文字並去除空格
                 if PER_text and PER_text != "-":  # 檢查是否為空
@@ -167,8 +159,7 @@ def fetch_stock_performance(request, stock_id, n_months):
         # 抓取最high PBR
         for i in range(3, n_months + 4):  # 從第 3 行開始
             try:
-                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                    i}]/td[11]"
+                path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[11]"
                 PER_element = driver.find_element(By.XPATH, path)
                 PER_text = PER_element.text.strip()  # 提取文字並去除空格
                 if PER_text and PER_text != "-":  # 檢查是否為空
@@ -186,8 +177,7 @@ def fetch_stock_performance(request, stock_id, n_months):
 
         # 抓取EPS
         for i in range(3, n_months + 4):
-            EPS_path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                i}]/td[10]"
+            EPS_path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[10]"
             EPS_data = driver.find_element(By.XPATH, EPS_path).text.strip()
             if EPS_data and EPS_data != "-":
                 EPS.append(EPS_data)
@@ -197,7 +187,6 @@ def fetch_stock_performance(request, stock_id, n_months):
         low_price_per = EPS_avg * PER_avg["low PER"]
         avg_price_per = EPS_avg * PER_avg["average PER"]
         high_price_per = EPS_avg * PER_avg["high PER"]
-        ic(low_price_per, avg_price_per, high_price_per)
 
         # 高低價法
         # ------------------------------高低價法-----------------------------
@@ -207,8 +196,7 @@ def fetch_stock_performance(request, stock_id, n_months):
 
         # 抓取最高價
         for i in range(3, n_months + 4):
-            path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                i}]/td[4]"
+            path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[4]"
             price = driver.find_element(By.XPATH, path).text.strip()
             if price and price != "-":
                 high.append(float(price))
@@ -217,12 +205,9 @@ def fetch_stock_performance(request, stock_id, n_months):
         else:
             high_avg = None  # 如果沒有有效數據，設置為 None
 
-        ic(high_avg)
-
         # 抓取最低價
         for i in range(3, n_months + 4):
-            path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                i}]/td[5]"
+            path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[5]"
             price = driver.find_element(By.XPATH, path).text.strip()
             if price and price != "-":
                 low.append(float(price))
@@ -230,12 +215,10 @@ def fetch_stock_performance(request, stock_id, n_months):
             low_avg = sum(low) / len(low)
         else:
             low_avg = None
-        ic(low_avg)
 
         # 抓取平均價
         for i in range(3, n_months + 4):
-            path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                i}]/td[6]"
+            path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[6]"
             price = driver.find_element(By.XPATH, path).text.strip()
             if price and price != "-":
                 avg.append(float(price))
@@ -244,7 +227,6 @@ def fetch_stock_performance(request, stock_id, n_months):
             avg_avg = sum(avg) / len(avg)
         else:
             avg_avg = None
-        ic(avg_avg)
 
         # 股利法：
         # -------------------------------股利法-----------------------------
@@ -261,8 +243,7 @@ def fetch_stock_performance(request, stock_id, n_months):
 
         # 抓取低股利
         for i in range(5, n_months + 6):
-            path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{
-                i}]/td[8]"
+            path = f"/html/body/table[2]/tbody/tr[2]/td[3]/main/section[2]/div/div/table[1]/tbody/tr[{i}]/td[8]"
             Dividend = driver.find_element(By.XPATH, path).text.strip()
             if Dividend and Dividend != "-":
                 dividend.append(float(Dividend))
@@ -270,12 +251,10 @@ def fetch_stock_performance(request, stock_id, n_months):
             avg = sum(dividend) / len(dividend)
         else:
             avg = None
-        ic(avg)
 
         low_dividend = avg * 15
         avg_dividend = avg * 20
         high_dividend = avg * 30
-        ic(low_dividend, avg_dividend, high_dividend)
 
         stock_info = twstock.realtime.get(stock_id)
         bid = float(stock_info["realtime"]["best_bid_price"][-1])
@@ -307,8 +286,6 @@ def fetch_stock_performance(request, stock_id, n_months):
             },
             "price": round(now_price, 2),  # 現價
         }
-
-        ic(result)
 
         return JsonResponse(result, safe=False)
 

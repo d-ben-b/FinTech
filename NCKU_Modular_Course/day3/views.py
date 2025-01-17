@@ -9,7 +9,6 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import TimeoutException
 import yfinance as yf
 import numpy as np
-import talib
 import twstock
 
 # Create your views here.
@@ -22,7 +21,7 @@ options.add_argument("--no-sandbox")
 def fetch_stock_performance(request, stock_id, option, period):
     try:
         driver = webdriver.Chrome(
-            service=Service(ChromeDriverManager().install()), options=options
+            options=options
         )
         base_url = "https://goodinfo.tw/tw/ShowK_ChartFlow.asp?RPT_CAT=PER&STOCK_ID="
         url = f"{base_url}{stock_id}&CHT_CAT={option}"
@@ -158,8 +157,9 @@ def ceiling_floor(request, stockSymbol, start_date, MA, MA_type, method_type):
     flatten_data = data["Close"].to_numpy().flatten()
     volume = data["Volume"].to_numpy().flatten()
 
-    MA = talib.SMA(flatten_data, timeperiod=MA_timeperiod) if MA_type == "SMA" else talib.WMA(
-        flatten_data, timeperiod=MA_timeperiod)
+    MA = data["Close"].rolling(
+        window=MA_timeperiod).mean().to_numpy().flatten() if MA_type == "SMA" else data["Close"].rolling(window=MA_timeperiod).apply(
+            lambda x: np.dot(x, np.arange(1, MA_timeperiod + 1)) / np.arange(1, MA_timeperiod + 1).sum(), raw=True).to_numpy().flatten()
     MA_cleaned = np.nan_to_num(MA, nan=0)
     MA_cleaned = np.round(MA_cleaned, 2)
 

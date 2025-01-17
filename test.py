@@ -67,22 +67,33 @@ except Exception:
     data = yf.download(stockSymbol + ".TWO", start=start_date)
 flatten_data = data["Close"].to_numpy().flatten()
 price = data["Volume"].to_numpy().flatten()
-ic(flatten_data)
-MA = talib.SMA(flatten_data, timeperiod=MA_timeperiod)
-# TODO: WMA
-MA_cleaned = np.nan_to_num(MA, nan=0)
-MA_cleaned = np.round(MA_cleaned, 2)
+
+# MA = talib.SMA(flatten_data, timeperiod=MA_timeperiod)
+# print(MA)
+# MA = data["Close"].rolling(window=MA_timeperiod).mean()
+# print(MA.to_numpy().flatten())
+MA = talib.WMA(flatten_data, timeperiod=MA_timeperiod)
+print(MA)
+weights = np.arange(1, MA_timeperiod + 1)
+MA = data["Close"].rolling(window=MA_timeperiod).apply(
+    lambda x: np.dot(x, weights) / weights.sum(), raw=True
+)
+print(MA.to_numpy().flatten())
+
+# # TODO: WMA
+# MA_cleaned = np.nan_to_num(MA, nan=0)
+# MA_cleaned = np.round(MA_cleaned, 2)
 
 
-for i in range(0, len(MA_cleaned)):
-    BIAS = (flatten_data[i] - MA_cleaned[i]) / \
-        MA_cleaned[i] if MA_cleaned[i] != 0 else None
+# for i in range(0, len(MA_cleaned)):
+#     BIAS = (flatten_data[i] - MA_cleaned[i]) / \
+#         MA_cleaned[i] if MA_cleaned[i] != 0 else None
 
-    if BIAS is not None:
-        pos_BIAS.append(BIAS) if BIAS > 0 else neg_BIAS.append(BIAS)
+#     if BIAS is not None:
+#         pos_BIAS.append(BIAS) if BIAS > 0 else neg_BIAS.append(BIAS)
 
-pos_BIAS.sort()
-neg_BIAS.sort()
+# pos_BIAS.sort()
+# neg_BIAS.sort()
 # pos_BIAS_val = pos_BIAS[int(len(pos_BIAS) * 0.95)]
 # neg_BIAS_val = neg_BIAS[int(len(neg_BIAS) * 0.05)]
 
