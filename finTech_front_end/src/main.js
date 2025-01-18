@@ -9,7 +9,9 @@ import Wait from './components/Wait.vue'
 const app = createApp(App)
 
 app.config.globalProperties.$axios = axios
-axios.defaults.baseURL = 'http://localhost:8081/'
+axios.defaults.withCredentials = true
+
+axios.defaults.baseURL = 'http://localhost:8000/auth/'
 
 app.use(router)
 app.use(HighchartsVue)

@@ -71,7 +71,7 @@ export default {
         data.dividend.high,
         data.price,
       )
-      line_data = (data.price / max_data) * 100
+      line_data = data.price
 
       // 更新圖表資料
       Highcharts.chart('bar-chart', {
@@ -90,7 +90,7 @@ export default {
         yAxis: {
           min: 0,
           title: {
-            text: '百分比',
+            text: '千元',
             align: 'high',
           },
           labels: {
@@ -105,7 +105,7 @@ export default {
             dataLabels: {
               enabled: true,
             },
-            stacking: 'percent',
+            stacking: 'overlap',
           },
         },
         legend: {

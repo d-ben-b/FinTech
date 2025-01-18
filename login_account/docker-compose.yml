@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  frontend-login:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '5173:80'
+    volumes:
+      - .:/app
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

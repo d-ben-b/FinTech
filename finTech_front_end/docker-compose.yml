@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: . # Dockerfile 所在目錄
+    container_name: myfrontend
+    ports:
+      - '1000:80' # 將主機的 1000 埠號映射到容器的 80 埠號
+    networks:
+      - frontend_network # 使用自定義網路
+    volumes:
+      - .:/app # 本地代碼掛載到容器中（開發模式需要）
+      - /app/node_modules # 確保 node_modules 不被覆蓋（避免問題）
+    stdin_open: true # 保持伺服器開啟
+    tty: true
+
+networks:
+  frontend_network:
+    driver: bridge

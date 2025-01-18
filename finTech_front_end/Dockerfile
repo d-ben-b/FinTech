@@ -1,24 +1,24 @@
-# Use official Node.js base image
+# 使用 Node.js 官方映像
 FROM node:lts-alpine
 
-# Create app directory
+# 設定工作目錄
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# 複製 package.json 和 package-lock.json
 COPY package*.json ./
 
-# Install dependencies
+# 安裝依賴
 RUN npm install
 
-# Copy source code
+# 複製代碼到容器
 COPY . .
 
-# Build the app
+# 預設執行生產模式
 RUN npm run build
 
-# Install serve globally, expose port 80, and serve
+# 安裝 serve 作為全域套件
 RUN npm install -g serve
 EXPOSE 80
 
-# CMD to start the server
-CMD [ "serve", "-s", "dist", "-l", "80" ]
+# 使用 serve 啟動靜態服務器
+CMD ["npx", "serve", "-s", "dist", "-l", "80"]

@@ -68,7 +68,7 @@ const formatOHLCData = (ohlc) => {
 const renderCharts = async () => {
   const data = await fetchChartData()
   const formattedData = formatOHLCData(data.ohlc)
-  Highcharts.chart('chart', {
+  Highcharts.stockChart('chart', {
     title: {
       text: '本益比河流圖',
     },
@@ -133,7 +133,7 @@ const renderCharts = async () => {
       },
     ],
   })
-  Highcharts.chart('price_chart', {
+  Highcharts.stockChart('price_chart', {
     chart: {
       type: 'bar',
     },

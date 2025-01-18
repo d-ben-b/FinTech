@@ -1,18 +1,36 @@
 <template>
   <nav class="navbar">
     <ul>
-      <li><router-link to="/day1">Day1</router-link></li>
-      <li><router-link to="/day2">Day2</router-link></li>
-      <li><router-link to="/day3-1">Day3-1</router-link></li>
-      <li><router-link to="/day3-2">Day3-2</router-link></li>
-      <li><router-link to="/day4">Day4</router-link></li>
-      <li><router-link to="/day5">Day5</router-link></li>
-      <li><router-link to="/logout">Logout</router-link></li>
+      <li><router-link to="/day1">股票分析</router-link></li>
+      <li><router-link to="/day2">股票定價結果</router-link></li>
+      <li><router-link to="/day3-1">本益比河流圖</router-link></li>
+      <li><router-link to="/day3-2">天花板地板線</router-link></li>
+      <li>
+        <a @click="Logout">Logout</a>
+      </li>
     </ul>
   </nav>
 </template>
+<script setup>
+import axios from 'axios'
 
-<script setup></script>
+const Logout = async () => {
+  try {
+    const username = localStorage.getItem('username')
+    console.log('username:', username)
+    const response = await axios.post('http://localhost:8001/login_manager/logout/', {
+      username: username,
+    })
+    localStorage.removeItem('username')
+    console.log('Logout successful!', response.data)
+
+    // 登出成功後跳轉到登入頁
+    window.location.href = 'http://localhost:5173'
+  } catch (error) {
+    console.error('Logout failed:', error)
+  }
+}
+</script>
 
 <style>
 /* Navbar Styles */
@@ -58,6 +76,7 @@
 .navbar a:hover {
   background-color: #2e8b57;
   color: white;
+  cursor: pointer;
 }
 
 /* 高亮當前路由 */
